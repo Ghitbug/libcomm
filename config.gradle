@@ -1,0 +1,46 @@
+ext {
+    android = [
+            compileSdkVersion: 29,
+            buildToolsVersion: "29.0.2",
+            minSdkVersion    : 19,
+            targetSdkVersion : 29,
+            versionCode      : 100,
+            versionName      : '1.0.0',
+            multiDexEnabled  : true,
+    ]
+    pom_version = [
+            lib_base: "1.0.0",
+    ]
+
+    depsLibs = [
+
+
+            appcompat               : "androidx.appcompat:appcompat:1.2.0",
+            recyclerview            : "androidx.recyclerview:recyclerview:1.1.0",
+            material                : 'com.google.android.material:material:1.2.1',
+            immersionbar            : "com.gyf.immersionbar:immersionbar:3.0.0",
+            recyclerview            : "androidx.recyclerview:recyclerview:1.1.0",
+
+
+            rxjava                  : "io.reactivex.rxjava3:rxjava:3.0.6",
+            rxandroid               : "io.reactivex.rxjava3:rxandroid:3.0.0",
+
+            kotlin_jdk              : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.10",
+            //Google AAC   LiveData和ViewModel组件
+            lifecycleCompiler       : "androidx.lifecycle:lifecycle-compiler:2.2.0",
+            lifecycle               : "androidx.lifecycle:lifecycle-extensions:2.2.0",
+            //https://github.com/trello/RxLifecycle  rx系列与View生命周期同步
+            rxlifecycle             : 'com.trello.rxlifecycle4:rxlifecycle:4.0.2',
+            rxlifecycle_components: 'com.trello.rxlifecycle4:rxlifecycle-components:4.0.2',
+
+            fastjson                : "com.alibaba:fastjson:1.1.72.android",
+            liveEventBus            : 'io.github.jeremyliao:live-event-bus-x:1.8.0',
+            multidex                : "androidx.multidex:multidex:2.0.1",
+            background              : 'com.github.JavaNoober.BackgroundLibrary:library:1.7.2',
+            //debug版本编译日志库 https://github.com/pengwei1024/LogUtils
+            logutils                : "com.apkfuns.logutils:library:1.7.5",
+
+    ]
+
+
+}

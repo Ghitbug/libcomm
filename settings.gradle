@@ -1,0 +1,4 @@
+rootProject.name = "mylibComm"
+include ':app'
+include ':lib_comm'
+
