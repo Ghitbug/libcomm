@@ -179,28 +179,13 @@ open class BaseRepository : AbsRepository() {
         send(builder, UploadBean::class.java, listener)
     }
 
-    open fun sendPost(method: String, listener: CallBack?) {
-        sendPost(method, false, listener)
-    }
-
-    open fun sendPost(method: String, isShowProgress: Boolean, listener: CallBack?) {
-        sendPost(method, null, null, isShowProgress, listener)
-    }
-
-    open fun sendPost(method: String, parameters: JSONObject?, listener: CallBack?) {
-        sendPost(method, parameters, null, false, listener)
-    }
-
-    open fun sendPost(method: String, parameters: JSONObject?, isShowProgress: Boolean, listener: CallBack?) {
-        sendPost(method, parameters, null, isShowProgress, listener)
-    }
-
-    open fun sendPost(method: String, parameters: JSONObject?, cl: Class<*>?, listener: CallBack?) {
-        sendPost(method, parameters, cl, false, listener)
-    }
-
     open fun sendPost(method: String, parameters: JSONObject?, cl: Class<*>?, isShowProgress: Boolean, listener: CallBack?) {
-        send(method, parameters, cl, isShowProgress, "", true, listener)
+        send(method, parameters, cl, isShowProgress, "", true, listener,false)
+    }
+
+
+    open fun sendPost(method: String, parameters: JSONObject?, cl: Class<*>?, isShowProgress: Boolean, listener: CallBack?,isThirdRequest:Boolean) {
+        send(method, parameters, cl, isShowProgress, "", true, listener,isThirdRequest)
     }
 
     /**
@@ -211,16 +196,17 @@ open class BaseRepository : AbsRepository() {
      * @param msg            加载中提示内容
      * @param isCancel
      * @param listener
+     * @param isThirdRequest  是否是第三方请求  默认是false
      */
-    open fun send(method: String, parameters: JSONObject?, cl: Class<*>?, isShowProgress: Boolean, msg: String?, isCancel: Boolean, listener: CallBack?) {
+    open fun send(method: String, parameters: JSONObject?, cl: Class<*>?, isShowProgress: Boolean, msg: String?, isCancel: Boolean, listener: CallBack?,isThirdRequest:Boolean) {
         val builder = HttpBuilder.getBuilder(method)
         builder.isShowProgress = isShowProgress
         builder.isCancel = isCancel
         builder.msg = msg
-        send(builder, parameters, cl, listener)
+        send(builder, parameters, cl, listener,isThirdRequest)
     }
 
-    open fun send(builder: HttpBuilder, parameters: JSONObject?, cl: Class<*>?, listener: CallBack?) {
+    open fun send(builder: HttpBuilder, parameters: JSONObject?, cl: Class<*>?, listener: CallBack?,isThirdRequest:Boolean) {
         val map: HashMap<String, Any> = HashMap()
         if (parameters != null) {
             val keys: MutableList<String> = ArrayList()
@@ -247,10 +233,15 @@ open class BaseRepository : AbsRepository() {
             }
         }
         builder.parameters = map
-        send(builder, cl, listener)
+        send(builder, cl, listener,isThirdRequest)
+
     }
 
     open fun send(builder: HttpBuilder, cl: Class<*>?, listener: CallBack?) {
+        send(builder, cl, listener,false)
+    }
+
+    open fun send(builder: HttpBuilder, cl: Class<*>?, listener: CallBack?,isThirdRequest:Boolean) {
         var listener = listener
         RxKeyboardTool.hideSoftInput(RxActivityTool.currentActivity())
         if (listener == null) listener = callBack
@@ -270,7 +261,13 @@ open class BaseRepository : AbsRepository() {
                 builder.tag = fragmentName
                 builder.setHeaders(JConstant.getHeardsVal())
                 subscriber.startTime = System.currentTimeMillis()
-                postForm(builder, subscriber)
+                if (!isThirdRequest){
+                    postForm(builder, subscriber)
+                }else {
+                     //TODO ThirdRequest
+                    postThirdRequest(builder,subscriber)
+                }
+
             } catch (e: Exception) {
                 e.printStackTrace()
                 Log.e("BaseRepository", e.message)
@@ -297,6 +294,20 @@ open class BaseRepository : AbsRepository() {
     }
 
     open fun postForm(builder: HttpBuilder, subscriber: RxSubscriber) {
+        var job = HttpUtils.postForm(builder, getViewModel(), object : NetWorkResult {
+            override fun onNext(result: String) {
+                subscriber.onNext(result)
+            }
+
+            override fun onError(e: Throwable) {
+                subscriber.onError(e)
+            }
+        })
+        addJob(job)
+    }
+
+
+    open fun postThirdRequest(builder: HttpBuilder, subscriber: RxSubscriber) {
         var job = HttpUtils.postForm(builder, getViewModel(), object : NetWorkResult {
             override fun onNext(result: String) {
                 subscriber.onNext(result)
