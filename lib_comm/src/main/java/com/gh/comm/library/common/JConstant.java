@@ -2,9 +2,8 @@ package com.gh.comm.library.common;
 
 import android.content.Context;
 
-import com.gh.mylibrary.utils.RxDataTool;
 import com.gh.comm.library.utils.YjUtil;
-
+import com.gh.libbase.utils.RxDataTool;
 
 
 /**

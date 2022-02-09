@@ -1,7 +1,7 @@
 package com.gh.comm.library.utils;
 
 
-import com.gh.mylibrary.utils.RxFragmentUtil;
+import com.gh.libbase.utils.RxFragmentUtil;
 
 /**
  * Fragment管理工具类

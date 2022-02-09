@@ -10,6 +10,8 @@ android {
         targetSdkVersion rootProject.android.targetSdkVersion
         versionCode 100
         versionName "1.0.0"
+        multiDexEnabled true
+
 
     }
 

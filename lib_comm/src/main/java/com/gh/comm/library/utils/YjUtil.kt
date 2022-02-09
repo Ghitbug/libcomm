@@ -2,7 +2,7 @@ package com.gh.comm.library.utils
 
 import android.os.Bundle
 import com.alibaba.fastjson.JSONObject
-import com.gh.mylibrary.utils.*
+import com.gh.libbase.utils.*
 
 /**
  * 公共参数获取类

@@ -1,7 +1,7 @@
 package com.gh.comm.library.live;
 
 
-import com.gh.mylibrary.live.BaseResult;
+import com.gh.libbase.live.BaseResult;
 
 /**
  * 回调信息统一封装类
